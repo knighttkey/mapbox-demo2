@@ -6,25 +6,14 @@
   export let data: {
     MAPBOX_TOKEN: string;
     CUSTOM_MAP_STYLE_2?: string;
-    CCTV_XS_01?: string;
-    CCTV_XS_02?: string;
-    CCTV_XS_03?: string;
-    CCTV_XS_04?: string;
   };
 
-  const {
-    MAPBOX_TOKEN,
-    CUSTOM_MAP_STYLE_2,
-    CCTV_XS_01,
-    CCTV_XS_02,
-    CCTV_XS_03,
-    CCTV_XS_04,
-  } = data;
+  const { MAPBOX_TOKEN, CUSTOM_MAP_STYLE_2 } = data;
 
-  let cctvXs01=CCTV_XS_01?CCTV_XS_01:''
-  let cctvXs02=CCTV_XS_02?CCTV_XS_02:''
-  let cctvXs03=CCTV_XS_03?CCTV_XS_03:''
-  let cctvXs04=CCTV_XS_04?CCTV_XS_04:''
+  let cctvXs01 = "https://3d-models.eyeots.com/poc/cctv/xs01.mov";
+  let cctvXs02 = "https://3d-models.eyeots.com/poc/cctv/xs02.mov";
+  let cctvXs03 = "https://3d-models.eyeots.com/poc/cctv/xs03.mov";
+  let cctvXs04 = "https://3d-models.eyeots.com/poc/cctv/xs04.mov";
 
   let accessToken: string = MAPBOX_TOKEN;
   let customMapStyle = CUSTOM_MAP_STYLE_2
@@ -268,7 +257,6 @@
 
         hideLabels();
       });
-
     });
     map.on("move", logMapState);
     map.on("zoom", logMapState);
