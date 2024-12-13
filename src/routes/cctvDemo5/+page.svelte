@@ -5,9 +5,6 @@
   let map: mapboxgl.Map | undefined;
   export let data: {
     MAPBOX_TOKEN: string;
-    CUSTOM_MAP_STYLE?: string;
-    SATELLITE_MAP_STYLE?: string;
-    DAY_SATELLITE_MAP_STYLE?: string;
     CUSTOM_MAP_STYLE_2?: string;
     CCTV_XS_01?: string;
     CCTV_XS_02?: string;
@@ -17,9 +14,6 @@
 
   const {
     MAPBOX_TOKEN,
-    CUSTOM_MAP_STYLE,
-    SATELLITE_MAP_STYLE,
-    DAY_SATELLITE_MAP_STYLE,
     CUSTOM_MAP_STYLE_2,
     CCTV_XS_01,
     CCTV_XS_02,

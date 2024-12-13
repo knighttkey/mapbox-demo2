@@ -1,8 +1,5 @@
 import {
   MAPBOX_TOKEN,
-  CUSTOM_MAP_STYLE,
-  SATELLITE_MAP_STYLE,
-  DAY_SATELLITE_MAP_STYLE,
   CUSTOM_MAP_STYLE_2,
   CCTV_XS_01,
   CCTV_XS_02,
@@ -12,9 +9,6 @@ import {
 export async function load() {
   return {
     MAPBOX_TOKEN,
-    CUSTOM_MAP_STYLE,
-    SATELLITE_MAP_STYLE,
-    DAY_SATELLITE_MAP_STYLE,
     CUSTOM_MAP_STYLE_2,
     CCTV_XS_01,
     CCTV_XS_02,
