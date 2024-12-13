@@ -9,6 +9,10 @@
     SATELLITE_MAP_STYLE?: string;
     DAY_SATELLITE_MAP_STYLE?: string;
     CUSTOM_MAP_STYLE_2?: string;
+    CCTV_XS_01?: string;
+    CCTV_XS_02?: string;
+    CCTV_XS_03?: string;
+    CCTV_XS_04?: string;
   };
 
   const {
@@ -17,7 +21,16 @@
     SATELLITE_MAP_STYLE,
     DAY_SATELLITE_MAP_STYLE,
     CUSTOM_MAP_STYLE_2,
+    CCTV_XS_01,
+    CCTV_XS_02,
+    CCTV_XS_03,
+    CCTV_XS_04,
   } = data;
+
+  let cctvXs01=CCTV_XS_01?CCTV_XS_01:''
+  let cctvXs02=CCTV_XS_02?CCTV_XS_02:''
+  let cctvXs03=CCTV_XS_03?CCTV_XS_03:''
+  let cctvXs04=CCTV_XS_04?CCTV_XS_04:''
 
   let accessToken: string = MAPBOX_TOKEN;
   let customMapStyle = CUSTOM_MAP_STYLE_2
@@ -70,7 +83,7 @@
     {
       id: "cctv1",
       center: [121.52769438802147, 25.062069616096878],
-      videoUrl: "/images/xs01.mov",
+      videoUrl: cctvXs01,
       zoom: 20.899285875881525,
       pitch: 84.99999999999997,
       bearing: 7.366810362461251,
@@ -85,7 +98,7 @@
     {
       id: "cctv2",
       center: [121.52758291507462, 25.058038352456165],
-      videoUrl: "/images/xs02.mov",
+      videoUrl: cctvXs02,
       zoom: 21.039065535822463,
       pitch: 82.00000000000001,
       bearing: 7.215265985947326,
@@ -99,7 +112,7 @@
     {
       id: "cctv3",
       center: [121.52749466910063, 25.05296792253631],
-      videoUrl: "/images/xs03.mov",
+      videoUrl: cctvXs03,
       zoom: 19.612951284547883,
       pitch: 83.00000000000007,
       bearing: -15.202346801336944,
@@ -113,7 +126,7 @@
     {
       id: "cctv4",
       center: [121.52955639085172, 25.048244701246915],
-      videoUrl: "/images/xs04.mov",
+      videoUrl: cctvXs04,
       zoom: 20.378062760567477,
       pitch: 81.50000000000006,
       bearing: -52.58022481119917,
