@@ -28,9 +28,7 @@
       <div class="title-row">
         <div class="left">
           {#if panelType === "cctv" && zoomInTarget.displayName}
-            <div class="title-icon"></div>
             <div class="text">{zoomInTarget.displayName}</div>
-            <div class="info-icon"></div>
           {/if}
         </div>
         <div class="right">
@@ -65,7 +63,7 @@
     left: 0;
     z-index: 9900;
     /* backdrop-filter: blur(10px); */
-    .zoom-in-panel {
+    & .zoom-in-panel {
       display: flex;
       flex-direction: column;
       width: 90%;
@@ -82,25 +80,17 @@
         opacity: 1;
       }
 
-      .title-row {
+      & .title-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         background-color: #012c2c80;
         height: 50px;
         padding: 15px;
-        .left {
+        & .left {
           display: flex;
           align-items: center;
-          .title-icon {
-            background-image: url("$lib/icon/cctv.svg");
-            width: 20px;
-            height: 20px;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-position: center;
-          }
-          .text {
+          & .text {
             font-weight: 700;
             font-size: 16px;
             line-height: 20px;
@@ -109,72 +99,11 @@
             user-select: none;
 			color: #ffffff;
           }
-          .info-icon {
-            background-image: url("$lib/icon/roadside_info.svg");
-            width: 20px;
-            height: 20px;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-position: center;
-            pointer-events: visible;
-            cursor: pointer;
-            position: relative;
-            &:before {
-              content: "";
-              position: absolute;
-              bottom: 100%;
-              left: 0;
-              transform: rotate(180deg) translateX(-50%);
-              border-width: 5px;
-              border-style: solid;
-              border-color: transparent transparent #ffffffbf transparent;
-              opacity: 0;
-              visibility: hidden;
-              transition:
-                opacity 0.3s ease,
-                visibility 0.3s ease;
-              z-index: 10;
-            }
-            &:after {
-              content: "停車場出入口 CCTV 即時影像";
-              position: absolute;
-              bottom: calc(100% + 10px);
-              left: calc(100% + 20px);
-              transform: translateX(-50%);
-              background-color: #ffffffbf;
-              color: #4f4f4f;
-              padding: 5px 10px;
-              border-radius: 5px;
-              white-space: nowrap;
-              opacity: 0;
-              visibility: hidden;
-              transition:
-                opacity 0.3s ease,
-                visibility 0.3s ease;
-              font-size: 14px;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-              z-index: 10;
-
-              height: 34px;
-              font-weight: 400;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-            &:hover::before {
-              opacity: 1;
-              visibility: visible;
-            }
-            &:hover::after {
-              opacity: 1;
-              visibility: visible;
-            }
-          }
         }
-        .right {
+        & .right {
           display: flex;
           align-items: center;
-          .zoom-out-icon {
+          & .zoom-out-icon {
             background-image: url("$lib/icon/zoom_out.svg");
             width: 24px;
             height: 24px;
@@ -186,12 +115,12 @@
           }
         }
       }
-      .img-row {
+      & .img-row {
         box-sizing: border-box;
         padding: 15px;
         width: 100%;
         height: calc(100% - 90px);
-        .video {
+        & .video {
           width: 100%;
           height: 100%;
         }
