@@ -1,34 +1,25 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import mapboxgl from "mapbox-gl";
-
+  import ZoomInPanel from "$lib/components/ZoomInPanel";
   let map: mapboxgl.Map | undefined;
   export let data: {
     MAPBOX_TOKEN: string;
     CUSTOM_MAP_STYLE_2?: string;
   };
-
   const { MAPBOX_TOKEN, CUSTOM_MAP_STYLE_2 } = data;
 
   let cctvXs01 = "https://3d-models.eyeots.com/poc/cctv/xs01.mov";
   let cctvXs02 = "https://3d-models.eyeots.com/poc/cctv/xs02.mov";
   let cctvXs03 = "https://3d-models.eyeots.com/poc/cctv/xs03.mov";
   let cctvXs04 = "https://3d-models.eyeots.com/poc/cctv/xs04.mov";
-  let cctvXs05 = "https://3d-models.eyeots.com/poc/cctv/aicctv1.mp4";
-  let cctvXs06 = "https://3d-models.eyeots.com/poc/cctv/aicctv2.mp4";
+  let cctvXs06 = "https://3d-models.eyeots.com/poc/cctv/aicctv1.mp4";
+  let cctvXs07 = "https://3d-models.eyeots.com/poc/cctv/aicctv2.mp4";
 
   let accessToken: string = MAPBOX_TOKEN;
   let customMapStyle = CUSTOM_MAP_STYLE_2
     ? CUSTOM_MAP_STYLE_2
     : "mapbox://styles/mapbox/light-v11";
-
-
-
-    
-  let currentView: { center: [number, number]; zoom: number } = {
-    center: [0, 0],
-    zoom: 0,
-  };
 
   let showAllCCTVs = false;
 
@@ -57,6 +48,19 @@
     zoom: 7.609594557568757,
     pitch: 54.86081664831626,
     bearing: -22.56938326419686,
+  };
+  const thView: {
+    id: string;
+    center: [number, number];
+    zoom: number;
+    pitch: number;
+    bearing: number;
+  } = {
+    id: "thView",
+    center: [100.71240773197599, 13.712874415655293],
+    zoom: 10.46307235269232,
+    pitch: 51.755969151530515,
+    bearing: 0,
   };
 
   const cctvs: {
@@ -134,6 +138,24 @@
       bearing: -52.58022481119917,
       videoCoordinates: [],
     },
+    {
+      id: "cctv6",
+      center: [100.69795551393837, 13.72143312911032],
+      videoUrl: "",
+      zoom: 16.21926411145746,
+      pitch: 81.50000000000006,
+      bearing: -52.58022481119917,
+      videoCoordinates: [],
+    },
+    {
+      id: "cctv7",
+      center: [100.75983858398985, 13.610784841683737 ],
+      videoUrl: "",
+      zoom: 16.21926411145746,
+      pitch: 81.50000000000006,
+      bearing: -52.58022481119917,
+      videoCoordinates: [],
+    },
   ];
 
   function calculateDistance(
@@ -164,7 +186,7 @@
     coordinates: [number, number][]
   ): void {
     if (!map) return;
-    if (id === "cctv5") return;
+    if (id === "cctv5" || id === "cctv6" || id === "cctv7") return;
     map.addSource(id, {
       type: "video",
       urls: [videoUrl],
@@ -273,11 +295,11 @@
       const zoom = map.getZoom();
       const pitch = map.getPitch();
       const bearing = map.getBearing();
-      console.log(`地圖狀態更新:
-        center: [${center.lng}, ${center.lat}],
-        zoom: ${zoom},
-        pitch: ${pitch},
-        bearing: ${bearing}`);
+      // console.log(`地圖狀態更新:
+      //   center: [${center.lng}, ${center.lat}],
+      //   zoom: ${zoom},
+      //   pitch: ${pitch},
+      //   bearing: ${bearing}`);
     }
   }
   function hideLabels() {
@@ -376,8 +398,9 @@
       cctvs.forEach((cctv) => {
         if (!map) return;
 
-        if (cctv.id === "cctv5") return;
-        map.setLayoutProperty(`${cctv.id}-layer`, "visibility", "none");
+        if (cctv.id === "cctv5" || cctv.id === "cctv6" || cctv.id === "cctv7")
+          return;
+        // map.setLayoutProperty(`${cctv.id}-layer`, "visibility", "none");
       });
       map.flyTo({
         center: view.center,
@@ -429,6 +452,20 @@
       elementSelector: ".custom-marker5",
       lineColor: "#ffffff",
     },
+    {
+      id: "line-source6",
+      markerCoordinate: [100.69795551393837, 13.72143312911032, 100],
+      targetCoordinate: [120.5391684675072, 22.710764810168108],
+      elementSelector: ".custom-marker6",
+      lineColor: "#ffffff",
+    },
+    {
+      id: "line-source7",
+      markerCoordinate: [100.75983858398985, 13.610784841683737, 100],
+      targetCoordinate: [120.5391684675072, 22.710764810168108],
+      elementSelector: ".custom-marker7",
+      lineColor: "#ffffff",
+    },
   ];
 
   function openLink() {
@@ -458,7 +495,8 @@
     cctvs.forEach((cctv) => {
       if (!map) return;
 
-      if (cctv.id === "cctv5") return;
+      if (view.id === "cctv5" || view.id === "cctv6" || view.id === "cctv7")
+        return;
       map.setLayoutProperty(`${cctv.id}-layer`, "visibility", "none");
     });
 
@@ -474,9 +512,27 @@
     });
     setTimeout(() => {
       if (!map) return;
-      if (view.id === "cctv5") return;
+      if (view.id === "cctv5" || view.id === "cctv6" || view.id === "cctv7")
+        return;
       map.setLayoutProperty(`${view.id}-layer`, "visibility", "visible");
     }, 6000);
+  }
+
+  interface VideoItem {
+    displayName: string;
+    url: string;
+  }
+  let zoomInTarget: VideoItem | null;
+  function onZoomInVideo(cctvId: string) {
+    if (cctvId === "cctv6") {
+      zoomInTarget = { url: cctvXs06, displayName: "cctv6" };
+    } else if (cctvId === "cctv7") {
+      zoomInTarget = { url: cctvXs07, displayName: "cctv7" };
+    }
+  }
+
+  function onClearTarget(e: CustomEvent) {
+    zoomInTarget = null;
   }
 </script>
 
@@ -588,16 +644,56 @@
       </div>
     </div>
   </div>
+  <div class="custom-marker-style custom-marker6">
+    <div class="wrap">
+      <div class="line"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+      <div class="line4"></div>
+      <div class="line5"></div>
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <button class="info" on:click={() => onZoomInVideo("cctv6")}>
+        <!-- svelte-ignore element_invalid_self_closing_tag -->
+        <video class="video-cube" src={cctvXs06} autoplay muted loop />
+      </button>
+      <div class="light-wrap">
+        <div class="light"></div>
+      </div>
+    </div>
+  </div>
+  <div class="custom-marker-style custom-marker7">
+    <div class="wrap">
+      <div class="line"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+      <div class="line4"></div>
+      <div class="line5"></div>
+      <button class="info" on:click={() => onZoomInVideo('cctv7')}>
+        <!-- svelte-ignore element_invalid_self_closing_tag -->
+        <video class="video-cube" src={cctvXs07} autoplay muted loop />
+      </button>
+      <div class="light-wrap">
+        <div class="light"></div>
+      </div>
+    </div>
+  </div>
 {/if}
 <div class="controls">
   <button on:click={() => flyTo(initialView)}>Taipei</button>
   <button on:click={() => flyTo(twView)}>Taiwan</button>
+  <button on:click={() => flyTo(thView)}>Bangkok</button>
   <button on:click={() => flyTo(cctvs[0])}>新生民權路口</button>
   <button on:click={() => flyTo(cctvs[1])}>新生民生路口</button>
   <button on:click={() => flyTo(cctvs[2])}>新生南京路口</button>
   <button on:click={() => flyTo(cctvs[3])}>新生長安路口</button>
   <button on:click={() => flyTo(cctvs[4])}>TCI Bio</button>
 </div>
+
+{#if zoomInTarget}
+  <ZoomInPanel panelType="cctv" on:clearTarget={onClearTarget} {zoomInTarget}
+  ></ZoomInPanel>
+{/if}
 
 <style lang="postcss">
   #mapContainer {
@@ -714,9 +810,9 @@
           rgba(183, 210, 255, 0.8) 60%,
           rgba(17, 24, 39, 0.01) 100%
         );
+        cursor: pointer;
         box-sizing: border-box;
         animation-delay: 3s;
-
         filter: drop-shadow(5px 0px 10px rgba(42, 255, 255, 0.3));
         & .link {
           text-decoration: none;
@@ -747,6 +843,11 @@
           display: flex;
           align-items: center;
           justify-content: start;
+        }
+
+        & .video-cube {
+          width: 160px;
+          height: 90px;
         }
       }
       & .light-wrap {
@@ -792,6 +893,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    white-space: nowrap;
   }
   .controls button:hover {
     background-color: #f0f0f0;
