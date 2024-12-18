@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   export let panelType = "";
-  console.log("panelType::: ", panelType);
   export let zoomInTarget: MediaItem | null;
   interface MediaItem {
     url: string;

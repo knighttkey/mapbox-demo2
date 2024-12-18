@@ -149,7 +149,7 @@
     },
     {
       id: "cctv7",
-      center: [100.75983858398985, 13.610784841683737 ],
+      center: [100.75983858398985, 13.610784841683737],
       videoUrl: "",
       zoom: 16.21926411145746,
       pitch: 81.50000000000006,
@@ -495,9 +495,15 @@
     cctvs.forEach((cctv) => {
       if (!map) return;
 
-      if (view.id === "cctv5" || view.id === "cctv6" || view.id === "cctv7")
+      if (view.id === "cctv5" || view.id === "cctv6" || view.id === "cctv7") {
         return;
-      map.setLayoutProperty(`${cctv.id}-layer`, "visibility", "none");
+      } else {
+        if( cctv.id === 'cctv5' || cctv.id === 'cctv6' || cctv.id === 'cctv7') {
+          return;
+        } else {
+          map.setLayoutProperty(`${cctv.id}-layer`, "visibility", "none");
+        }
+      }
     });
 
     map.flyTo({
@@ -669,7 +675,7 @@
       <div class="line3"></div>
       <div class="line4"></div>
       <div class="line5"></div>
-      <button class="info" on:click={() => onZoomInVideo('cctv7')}>
+      <button class="info" on:click={() => onZoomInVideo("cctv7")}>
         <!-- svelte-ignore element_invalid_self_closing_tag -->
         <video class="video-cube" src={cctvXs07} autoplay muted loop />
       </button>
